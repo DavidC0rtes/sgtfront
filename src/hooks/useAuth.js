@@ -8,7 +8,7 @@
 
 import React, { useState, useContext, createContext } from "react"
 import loginService from '../services/login'
-import userService from '../services/users'
+import userService from '../services/user'
 
 const authContext = createContext()
 
@@ -38,6 +38,7 @@ function useProvideAuth() {
      * @param {object} credentials 
      */
     const login = async (credentials) => {
+        console.log(credentials)
         const result = await loginService.login(credentials)
         console.log(result)
         window.localStorage.setItem('user', JSON.stringify(result))

@@ -1,4 +1,5 @@
 //import { createBrowserHistory } from "history";
+import { ProvideAuth } from './hooks/useAuth'
 import {
     BrowserRouter,
     Routes,
@@ -16,6 +17,7 @@ import Employee from './views/Employee.js'
 
 function App() {
   return (
+      <ProvideAuth>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
@@ -25,6 +27,7 @@ function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
+      </ProvideAuth>
   );
 }
 

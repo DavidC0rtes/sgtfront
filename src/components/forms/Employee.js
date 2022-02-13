@@ -1,27 +1,29 @@
 import { useState } from 'react'
-import loginService from '../../services/login'
 import { useToast } from '@chakra-ui/react'
+import { useAuth } from '../../hooks/useAuth'
 import {
     FormControl,
     FormLabel,
     Input,
     Button
 } from '@chakra-ui/react' 
-
+import { useNavigate } from "react-router-dom";
 
 
 const EmployeeForm = () => {
     const [state, setState] = useState({ username: '', password: ''})
+    const auth = useAuth()
     const toast = useToast()
     const toastID = 'toast-login'
+    const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const result = await loginService.login(state)
-        
-        if (result.length) {
-            //ToDo
-        } else {
+        try {
+            await auth.login(state)
+            navigate("/")
+        } catch(err) {
+            console.log(err)
             if (!toast.isActive(toastID)) {
                 toast({
                     title: 'Contraseña y/o correo electrónico inválidos' ,
