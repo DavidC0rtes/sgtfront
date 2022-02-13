@@ -38,11 +38,14 @@ function useProvideAuth() {
      * @param {object} credentials 
      */
     const login = async (credentials) => {
-        console.log(credentials)
         const result = await loginService.login(credentials)
-        console.log(result)
-        window.localStorage.setItem('user', JSON.stringify(result))
-        setUser(result)
+        if (result.length) {
+            window.localStorage.setItem('user', JSON.stringify(result))
+            setUser(result)
+        } else {
+           throw new Error('Nombre de usuario y/o contraseña incorrectas')
+        } 
+
     }
     /**
      * Registrase, crear la cuenta de un usuario nuevo.
