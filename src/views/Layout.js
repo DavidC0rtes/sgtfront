@@ -11,7 +11,7 @@ import {
 const Layout = () => {
     return (
       <Container id="root" height='100vh' maxW='container.xl' centerContent
-        backgroundColor="#F7F0CC">
+        backgroundColor="#abb1dc">
         <Breadcrumb marginTop='1em'>
             <BreadcrumbItem>
                 <BreadcrumbLink as={Link} to ="/">

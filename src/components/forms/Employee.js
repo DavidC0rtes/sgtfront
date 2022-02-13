@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import loginService from '../../services/login'
+import { useToast } from '@chakra-ui/react'
 import {
     FormControl,
     FormLabel,
@@ -6,12 +8,29 @@ import {
     Button
 } from '@chakra-ui/react' 
 
+
+
 const EmployeeForm = () => {
     const [state, setState] = useState({ username: '', password: ''})
+    const toast = useToast()
+    const toastID = 'toast-login'
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        console.log(event)
+        const result = await loginService.login(state)
+        
+        if (result.length) {
+            //ToDo
+        } else {
+            if (!toast.isActive(toastID)) {
+                toast({
+                    title: 'Contraseña y/o correo electrónico inválidos' ,
+                    duration: 4000,
+                    isClosable: false,
+                    status: 'error'
+                })
+            }
+        }
     }
 
     const handleChange = (event) => {
@@ -27,11 +46,11 @@ const EmployeeForm = () => {
         <form id="form-empleado" onSubmit={handleSubmit}>
             <FormControl isRequired marginBottom='1em'>
                 <FormLabel html-for="username" fontSize='calc(0.75em + 1vmin)'>Nombre de usuario</FormLabel>
-                <Input id="username" type="text" size='lg' value={state.username} onChange={handleChange} />
+                <Input id="username" type="text" size='lg' variant="filled" value={state.username} onChange={handleChange} />
             </FormControl>
             <FormControl isRequired marginBottom='1em'>
                 <FormLabel html-for="password" fontSize='calc(0.75em + 1vmin)'>Contraseña</FormLabel>
-                <Input id="password" type="password" size='lg' value={state.password} onChange={handleChange} />
+                <Input id="password" type="password" variant="filled" size='lg' value={state.password} onChange={handleChange} />
             </FormControl>
             <Button type="submit" colorScheme="cyan" size="lg">Entrar</Button>
         </form>
