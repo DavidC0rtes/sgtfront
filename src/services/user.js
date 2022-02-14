@@ -1,7 +1,7 @@
 /**
  * Este archivo manda todas las peticiones que tienen que ver con los usuarios
  */
-const baseUrl = 'https://wwwproject.herokuapp.com'
+const baseUrl = process.env.REACT_APP_API_URL
 
 /**
  * Obtiene todos los usuarios del proyecto, i.e: manda una petición

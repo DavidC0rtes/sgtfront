@@ -6,18 +6,26 @@ import {
     Button,
     Stack,
     useRadioGroup,
+    Spinner
 } from '@chakra-ui/react' 
 
 import RadioCard from '../RadioCard'
+import clientService from '../../services/client'
 
 const ClientForm = () => {
     const [state, setState] = useState({ fullname: '', cc: '', caja: ''})
+    const [showSpinner, setSpinner] = useState(false)
     const actions = ['general', 'ie', 's', 'd', 'vip']
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        console.log(event)
+
+        const res = await clientService.getByCC(state.cc)
+        if (res.length) {
+            setSpinner(true) 
+            
+        }        
     }
 
     const handleChange = (event) => {
@@ -66,6 +74,7 @@ const ClientForm = () => {
                 </Stack>
             </FormControl>
             <Button type="submit" colorScheme='yellow' marginTop='1em' size='lg'>Listo</Button>
+            { showSpinner && <Spinner size='lg' />}
         </form>
     )
 }

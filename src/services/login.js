@@ -3,10 +3,10 @@
  */
 
 
-const baseUrl = 'https://wwwproject.herokuapp.com/busqueda_usuario'
+const baseUrl = process.env.REACT_APP_API_URL
 
 const login = async ({ username, password }) => {
-    const response = await fetch(`${baseUrl}/?id=&nombre=${username}&rol=&contrasena=${password}`)
+    const response = await fetch(`${baseUrl}/busqueda_usuario/?id=&nombre=${username}&rol=&contrasena=${password}`)
 
     const data = await response.json()
     return data
