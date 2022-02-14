@@ -12,6 +12,7 @@ const login = async ({ username, password }) => {
     return data
 }
 
+// eslint-disable-next-line
 export default {
     login
 }
