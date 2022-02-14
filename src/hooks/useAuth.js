@@ -54,7 +54,7 @@ function useProvideAuth() {
      * @param {objeto} obj 
      */
     const signup = async (obj) => {
-        const newUser = await userService.create(obj)
+        await userService.create(obj)
     }
 
     /**

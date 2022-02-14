@@ -25,5 +25,6 @@ const getByUsername = async (username) => {
 
 // eslint-disable-next-line
 export default {
-    getAll
+    getAll,
+    getByUsername
 }
