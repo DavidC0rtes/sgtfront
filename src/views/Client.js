@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Heading, Grid, GridItem, Image} from '@chakra-ui/react'
 import ClientForm from '../components/forms/Client'
+import { Outlet } from 'react-router-dom'
 
 
 const Client = () => {

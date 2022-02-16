@@ -21,7 +21,7 @@ const EmployeeForm = () => {
         event.preventDefault()
         try {
             await auth.login(state)
-            navigate("/")
+            navigate("dashboard")
         } catch(err) {
             console.error(err)
             if (!toast.isActive(toastID)) {
