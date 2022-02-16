@@ -7,7 +7,7 @@ import {
   BreadcrumbLink,
 } from '@chakra-ui/react'
 
-const Layout = () => {
+const Layout = ({ children }) => {
     return (
       <Container id="root" height='100vh' maxW='container.xl' centerContent
         backgroundColor="#abb1dc">
@@ -16,6 +16,7 @@ const Layout = () => {
                 <BreadcrumbLink as={Link} to ="/">
                     Inicio
                 </BreadcrumbLink>
+                {children}
             </BreadcrumbItem>
         </Breadcrumb>
         <Outlet />

@@ -6,7 +6,8 @@ import {
     Button,
     Stack,
     useRadioGroup,
-    Spinner
+    Spinner,
+    useToast,
 } from '@chakra-ui/react' 
 
 import RadioCard from '../RadioCard'
@@ -17,6 +18,7 @@ const ClientForm = () => {
     const [showSpinner, setSpinner] = useState(false)
     const actions = ['general', 'ie', 's', 'd', 'vip']
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
+    const toast = useToast()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -24,7 +26,14 @@ const ClientForm = () => {
         const res = await clientService.getByCC(state.cc)
         if (res.length) {
             setSpinner(true) 
-            
+        } else {
+            toast({
+                title: 'No se encuentra',
+                description: `El cliente con cedula ${state.cc} no se encuentra`,
+                status: 'error',
+                duration: 3000,
+                isClosable: false,
+            })
         }        
     }
 
