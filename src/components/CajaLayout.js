@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Heading, SimpleGrid, HStack, VStack, Flex, Spacer, Square, Box, extendTheme, Text } from '@chakra-ui/react'
+import { Heading, SimpleGrid, HStack, VStack, Flex, Square, Text } from '@chakra-ui/react'
 import cajaService from '../services/handler.js'
 
 
@@ -21,32 +21,6 @@ function usePrevious(value) {
   }
 
 
-const theme = extendTheme ({ //no sirve, averiguar que pasa luego
-    textStyles: {
-        h1: {
-          // you can also use responsive styles
-          fontSize: ['48px', '72px'],
-          fontWeight: 'bold',
-          lineHeight: '110%',
-          color: 'black',
-          letterSpacing: '-2%',
-        },
-        h2: {
-          fontSize: ['36px', '48px'],
-          fontWeight: 'semibold',
-          lineHeight: '110%',
-          letterSpacing: '-1%',
-        },
-        paragraph: {
-            fontSize: ['16px', '28px'],
-            fontWeight: 'normal',
-            lineheight: '100%',
-            color: 'green',
-            letterSpacing: '-1%',
-        },
-      },
-    })
-
 console.log(cajasOld)
 
 const CajaLayout = () => {
@@ -67,20 +41,21 @@ const CajaLayout = () => {
         if (previousUpdate !== update) {
           fetchCajas()
         }
+        
       }, [update])
       console.log(cajas)
+      console.log(setUpdate) //1000000000000000000000000 IQ
     
     return (
         <div id='main' style={{opacity: '1', textAlign:'center'}}>
             <Heading size='4xl' margin='1.2em 0'>Cajas</Heading>
             <SimpleGrid columns={1} spacing={1}>
             {Object.values(cajas).map(hstack => {
-                const {id, numero_caja, tipo} = hstack;
-                
+                const {id, numero_caja, tipo} = hstack;               
                 return(
                     <HStack color= 'black'  spacing='22px' key={id}>
                         <Square  rounded='md' color='black' size='70px' border='1px' borderColor='gray'>
-                            <Text fontWeight='bold'>{numero_caja}</Text>
+                            <Text fontWeight='bold' fontSize='32'>{numero_caja}</Text>
                         </Square>
                         <VStack spacing={0} align='start'>
                             <Flex>
@@ -92,10 +67,8 @@ const CajaLayout = () => {
                                 <Text>{tipo}</Text>
                             </Flex>
                         </VStack>
-                    </HStack>)
-                
-            })}</SimpleGrid>
-            
+                    </HStack>)               
+            })}</SimpleGrid>            
         </div>
     )
 }

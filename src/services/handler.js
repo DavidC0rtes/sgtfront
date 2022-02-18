@@ -18,19 +18,10 @@ const getByID = async (id) => {
     return data
 }
 
-const getByNumber = async (num) => {
-    const response = await fetch(`${baseUrl}/busqueda_caja/?id=&numero_caja=${num}&tipo=`)
-    const data = await response.json()
-    return data
-}
 
-const getByType = async (type) => {
-    const response = await fetch(`${baseUrl}/busqueda_caja/?id=&numero_caja=&tipo=${type}`)
-    const data = await response.json()
-    return data
-}
-
-export default {
+const exportedObject = {
     getAll,
     getByID
 }
+
+export default exportedObject;
