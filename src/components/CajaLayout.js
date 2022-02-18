@@ -60,7 +60,7 @@ const CajaLayout = () => {
                         <VStack spacing={0} align='start'>
                             <Flex>
                                 <Text fontWeight='bold'>Atiende:</Text>
-                                <Text>Jose Alejandro Hurtado</Text>
+                                <Text>Jose Alejandro Hurtado</Text> 
                             </Flex>
                             <Flex>
                                 <Text fontWeight='bold'>Tipo de Transacción:</Text>
