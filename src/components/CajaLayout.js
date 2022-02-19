@@ -42,7 +42,7 @@ const CajaLayout = () => {
           fetchCajas()
         }
         
-      }, [update])
+      }, [update, previousUpdate])
       console.log(cajas)
       console.log(setUpdate) //1000000000000000000000000 IQ
     
