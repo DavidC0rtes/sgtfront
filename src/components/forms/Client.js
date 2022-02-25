@@ -1,4 +1,5 @@
 import {React, useState} from 'react'
+import { useTurn } from '../../hooks/useTurn'
 import {
     FormControl,
     FormLabel,
@@ -12,13 +13,17 @@ import {
 
 import RadioCard from '../RadioCard'
 import clientService from '../../services/client'
+import turnService from '../../services/turn'
+import { useNavigate } from "react-router-dom";
 
 const ClientForm = () => {
     const [state, setState] = useState({ fullname: '', cc: '', caja: ''})
     const [showSpinner, setSpinner] = useState(false)
-    const actions = ['general', 'ie', 's', 'd', 'vip']
+    const turn = useTurn()
+    const actions = ['G', 'IE', 'S', 'D', 'VIP']
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
     const toast = useToast()
+    const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -26,6 +31,35 @@ const ClientForm = () => {
         const res = await clientService.getByCC(state.cc)
         if (res.length) {
             setSpinner(true) 
+
+            const currentTurn = await turnService.getTurn({cc: state.cc})
+            if (currentTurn.length > 0) {
+                //setSpinner(false)
+                //toast({
+                //    title: '¡Oops!',
+                //    description: `El cliente con cedula ${state.cc} ya tiene un turno en espera.`,
+                //    status: 'info',
+                //    duration: 4000,
+                //    isClosable: false,
+                //})
+                try {
+                    await turn.requestTurn({cc: state.cc, tipo: state.caja})
+                    navigate("turn")
+                } catch(err) {
+                    console.err(err)
+                    toast({
+                        title: '¡Oops!',
+                        description: 'Ha ocurrido un error, intente más tarde.',
+                        status: 'error',
+                        duration: 4000,
+                        isClosable: false,
+                    })
+                }
+
+            } else {
+                //const newTurn = await turnService.requestTurn(state.cc)
+                console.log("Not yet :(")
+            }
         } else {
             toast({
                 title: 'No se encuentra',
