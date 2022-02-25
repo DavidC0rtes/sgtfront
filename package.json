@@ -46,5 +46,5 @@
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5"
   },
-  "proxy":"https://wwwproject.herokuapp.com/"
+  "proxy": "https://wwwproject.herokuapp.com/"
 }
