@@ -1,4 +1,5 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import CajaLayout from '../components/CajaLayout.js'
 
 const Dashboard = () => {
     return (
@@ -13,7 +14,7 @@ const Dashboard = () => {
                     <p>one!</p>
                </TabPanel>
                <TabPanel>
-                    <p>two!</p>
+                    <CajaLayout></CajaLayout>
                 </TabPanel>
                <TabPanel>
                     <p>three!</p>

@@ -62,7 +62,7 @@ function useProvideAuth() {
      * y tambien se hace el estado user igual a null.
      */
     const logout = () => { 
-        window.localStorage.clear();
+        window.localStorage.removeItem('user');
         setUser(null)
     }
 
