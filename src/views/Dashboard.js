@@ -1,6 +1,7 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import CajaLayout from '../components/CajaLayout.js'
 import EmployeeClockInForm from '../components/forms/EmployeeClockIn.js'
+import ClientForm from '../components/forms/Client.js'
 
 const Dashboard = () => {
     return (
@@ -13,7 +14,7 @@ const Dashboard = () => {
              </TabList>
              <TabPanels>
                 <TabPanel>
-                   <EmployeeClockInForm></EmployeeClockInForm>
+                  <EmployeeClockInForm></EmployeeClockInForm>
                </TabPanel>  
                <TabPanel>
                     <p>one!</p>

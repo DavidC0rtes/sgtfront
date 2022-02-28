@@ -30,42 +30,40 @@ function usePrevious(value) {
 
 const EmployeeClockInForm = () => {
     const [state, setState] = useState({ site: '', caja: ''})
+    const [value, setValue] = useState('');
     const [showSpinner, setSpinner] = useState(false)
-    const auth = useAuth()
     const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
-    const [cajas, setCajas] = useState([]) //Almacena las cajas traidas de la base de 
+    const [cajas, setCajas] = useState([]) //Almacena las cajas de la sede traidas de la base de datos
+    const [tipos, setTipos] = useState([]) //Almacena los tipos de cajas registrados en la base de datos (las cajas en backend_cajas)
     const [sedes, setSedes] = useState([]) //Almacena las sedes traidas de la base de datos
+    const auth = useAuth()
     const previousUpdate = usePrevious(update)
+    var actions = []
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
     const toast = useToast()
 
     useEffect(() => {   //Javascript es magia negra pana, Brujería.
-        const fetchSedes = async () => {
-          const result = await siteService.getAllSites()
+        const fetchInfo = async () => {
+          const result = await siteService.getAllSites() 
+          const result2 = await cajaService.getAll()
           setSedes(result)
-          
+          setTipos(result2)
         }
     
         // Solo llamar a la función si se le ha dado click
         // al botón de actualizar.
         if (previousUpdate !== update) {
-          fetchSedes()
+          fetchInfo()
         }
         
       }, [update, previousUpdate])
-      console.log(sedes)
+      console.log(state)
       console.log(setUpdate) //1000000000000000000000000 IQ
 
-    const fetchCajas = async () => {
-        const result = await siteService.getAllSitesBoxes()
+    const fetchCajas = async (sede_id) => {
+        const result = await siteService.getAllBoxesFromID(sede_id)
         setCajas(result)
-        
       }
-
-    var actions = fetchCajas.map(function(el) {  //Deberia retornar todos los tipos de cajas en la sede
-        return el.tipo
-    })
-
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -92,11 +90,14 @@ const EmployeeClockInForm = () => {
         } else {
             key = event.target.id ? event.target.id : event.target.name 
             obj[key] = event.target.value
+            fetchCajas(obj[key])
+            setValue(event.target.value)
         }
 
         const prevState = JSON.parse(JSON.stringify(state))
         setState({ ...prevState, ...obj })
     }
+    
 
     const { getRootProps, getRadioProps } = useRadioGroup({
         name: 'caja',
@@ -105,24 +106,22 @@ const EmployeeClockInForm = () => {
     })
 
     const group = getRootProps()
-
+    console.log(cajas)
+    console.log(tipos)
     return (
-        <form id="form-cliente" onSubmit={handleSubmit}>
+        <form id="form-clockIn" onSubmit={handleSubmit}>
             <FormControl isRequired>
                 <FormLabel html-for="sede" fontSize='calc(0.75em + 1vmin)' >Sedes</FormLabel>
-                {Object.values(sedes).map(Select => {
-                    const {id, nombre, direccion} = Select;
-                    return(
-                        <Select placeholder='Seleccionar sede'>
-                            <option value={id}>{nombre}</option>
-                        </Select>
-                    )
-                })}
+                <Select placeholder="Seleccionar sede" value={value} onChange={handleChange}>
+                    {Object.values(sedes).map((obj) => {
+                        return <option key={obj.id} value={obj.id}>{obj.nombre}</option> //Si no ponemos value el asume nombre, pero no queremos buscar por nombre
+                    })}
+                </Select>
             </FormControl>
             <FormControl isRequired>
                 <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
-                    {actions.map((value, i) => {
+                {actions.map((value, i) => {
                         const radio = getRadioProps({ value })
                         return (
                             <RadioCard key={value} {...radio}>

@@ -8,7 +8,7 @@
  //SEDES
 
  const getAllSites = async () => {
-    const response = await fetch(`${baseUrl}/busqueda_caja/?id=&numero_caja=&tipo=`)
+    const response = await fetch(`${baseUrl}/busqueda_sede/?id=&nombre=&direccion=`)
     const data = await response.json()
     return data
 }
@@ -22,11 +22,19 @@ const getSiteByID = async (id) => {
 
 //Cajas de sede
 
+//Todas
 const getAllSitesBoxes = async () => {
     const response = await fetch(`${baseUrl}/busqueda_sede_caja/?id=&id_caja=&id_sede=`)
     const data = await response.json()
     return data
 }
+//Todas las de una ID dada
+const getAllBoxesFromID = async ( id ) => {
+    const response = await fetch(`${baseUrl}/busqueda_sede_caja/?id=&id_caja=&id_sede=${id}`)
+    const data = await response.json()
+    return data
+}
+
 
 //Usuarios de las cajas de la sede
 
@@ -48,6 +56,7 @@ const exportedObject = {
     getAllSites,
     getSiteByID,
     getAllSitesBoxes,
+    getAllBoxesFromID,
     getAllSiteClockedUsers,
     userClockInSite
 }
