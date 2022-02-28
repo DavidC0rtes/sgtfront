@@ -29,7 +29,7 @@ function usePrevious(value) {
   }
 
 const EmployeeClockInForm = () => {
-    const [state, setState] = useState({ site: '', caja: ''})
+    const [state, setState] = useState({ sede: '', caja: ''})
     const [value, setValue] = useState('');
     const [showSpinner, setSpinner] = useState(false)
     const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
@@ -63,7 +63,19 @@ const EmployeeClockInForm = () => {
     const fetchCajas = async (sede_id) => {
         const result = await siteService.getAllBoxesFromID(sede_id)
         setCajas(result)
-      }
+    }
+
+    
+    //Tenemos que filtrar los tipos de cajas que están en la sede seleccionada.
+    const IDscajasDelSitio = cajas.map(value => value.id_caja_id) //Hacemos un Array con las ID de las cajas en la sede
+    const cajasDelSitio = tipos.filter(caja => IDscajasDelSitio.includes(caja.id)) //Filtramos las cajas del sitio
+
+    actions = cajasDelSitio.map(function(el){ //Los tipos de cajas que hay en la base de datos (IE, G, etc.)
+        return el.tipo
+    })
+
+
+    console.log(cajasDelSitio)  
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -81,6 +93,7 @@ const EmployeeClockInForm = () => {
             })
         }        
     }
+
 
     const handleChange = (event) => {
         const obj = {}
@@ -107,12 +120,12 @@ const EmployeeClockInForm = () => {
 
     const group = getRootProps()
     console.log(cajas)
-    console.log(tipos)
+    console.log(auth.user)
     return (
         <form id="form-clockIn" onSubmit={handleSubmit}>
             <FormControl isRequired>
                 <FormLabel html-for="sede" fontSize='calc(0.75em + 1vmin)' >Sedes</FormLabel>
-                <Select placeholder="Seleccionar sede" value={value} onChange={handleChange}>
+                <Select id="sede" placeholder="Seleccionar sede"  value={value} onChange={handleChange}>
                     {Object.values(sedes).map((obj) => {
                         return <option key={obj.id} value={obj.id}>{obj.nombre}</option> //Si no ponemos value el asume nombre, pero no queremos buscar por nombre
                     })}
@@ -123,6 +136,7 @@ const EmployeeClockInForm = () => {
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
                 {actions.map((value, i) => {
                         const radio = getRadioProps({ value })
+                        console.log(i)
                         return (
                             <RadioCard key={value} {...radio}>
                                 {text[i]}
