@@ -80,7 +80,7 @@ const EmployeeClockInForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        const res = await siteService.userClockInSite(state.caja, auth.user.id)
+        const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
         if (res.length) {
             setSpinner(true) 
         } else {
@@ -100,10 +100,12 @@ const EmployeeClockInForm = () => {
         let key
         if (actions.some(x => x === event)) {
             obj['caja'] = event
+            console.log(event)
         } else {
             key = event.target.id ? event.target.id : event.target.name 
             obj[key] = event.target.value
             fetchCajas(obj[key])
+            console.log(fetchCajas(obj[key]))
             setValue(event.target.value)
         }
 
@@ -120,7 +122,8 @@ const EmployeeClockInForm = () => {
 
     const group = getRootProps()
     console.log(cajas)
-    console.log(auth.user)
+    console.log(state.caja)
+    console.log(auth.user[0].id)
     return (
         <form id="form-clockIn" onSubmit={handleSubmit}>
             <FormControl isRequired>
@@ -132,13 +135,13 @@ const EmployeeClockInForm = () => {
                 </Select>
             </FormControl>
             <FormControl isRequired>
-                <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
-                <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
-                {actions.map((value, i) => {
-                        const radio = getRadioProps({ value })
+                <FormLabel html-for="caj" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
+                <Stack id="caj" name="caj" {...group} direction={['column', 'row']}>
+                {Object.values(cajasDelSitio).map((id, i) => {
+                        const radio = getRadioProps(id)
                         console.log(i)
                         return (
-                            <RadioCard key={value} {...radio}>
+                            <RadioCard key={id} {...radio}>
                                 {text[i]}
                             </RadioCard>
                         )
