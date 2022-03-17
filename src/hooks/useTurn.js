@@ -4,7 +4,7 @@ import turnService from '../services/turn'
 
 const turnContext = createContext()
 
-// Componente proveedor del contexto auth a todos los componentes debajo de él (children)
+// Componente proveedor del contexto turn a todos los componentes debajo de él (children)
 export function ProvideTurn({ children }) {
     const turn = useProvideTurn()
     return <turnContext.Provider value={turn}>{children}</turnContext.Provider>
@@ -29,13 +29,12 @@ function useProvideTurn() {
      * @param {object} body 
      */
     const requestTurn = async (body) => {
-        const result = await turnService.requestTurn({cc: body.cc, tipo: body.tipo})
-        if (result) {
-            
-            const newTurn = await turnService.getTurn({cc: body.cc, tipo: body.caja})
+        const res = await turnService.requestTurn({cc: body.cc, tipo: body.tipo})
+        if (res.status === 200) {
+            const newTurn = await turnService.getTurn({cc: body.cc, tipo: body.tipo})
             window.localStorage.setItem('turn', JSON.stringify(newTurn.pop()))
 
-            setState(result)
+            setState(newTurn.pop())
         } else {
            throw new Error('Ha ocurrido un error generando su turno.')
         } 
