@@ -28,9 +28,9 @@ const ClientForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
+        setSpinner(true) 
         const res = await clientService.getByCC(state.cc)
         if (res.length) {
-            setSpinner(true) 
 
             const currentTurn = await turnService.getTurn({cc: state.cc})
             if (currentTurn.length > 0) {
@@ -68,6 +68,7 @@ const ClientForm = () => {
                 duration: 3000,
                 isClosable: false,
             })
+	    setSpinner(false)
         }        
     }
 
