@@ -21,17 +21,27 @@ const GridClientTurn = () => {
     const navigate = useNavigate()
 
     useInterval(async() => {
-        const turns = await turnService.getTurn({tipo: turn.state.tipo})
-        const caja = await cajaService.get({tipo: turn.state.tipo})
+	let turns = await turnService.getTurn({tipo: turn.state.tipo})
+        let caja = await cajaService.get({tipo: turn.state.tipo})
+	handleNewTick(turns, caja)
+    }, 5000)
+    
+    const handleNewTick = async (turns, caja) => {
+	const turnoActual = turns.shift()
+	const newState = { turno: turnoActual }
+	const keepWaiting = turnoActual.id !== turn.state.id
+	
+	if (keepWaiting) {
+	    newState.caja = caja.length ? caja[0].numero_caja : 'N/D'
+	} else {
+	    const res = await fetch(`https://wwwproject.herokuapp.com/busqueda_atencion/?id_turno=${turn.state.id}&id_sede_caja=`)
+	    newState.caja = res.id_sede_caja_id
+	}
 
-        const newState = {
-            turno: turns.shift(),
-            caja: caja.length ? caja[0].numero_caja : 'N/D'
-        }
         setState(newState)
 	setSpinner(false)
-    }, 3000)
-    
+    }
+
     const cancelTurn = () => {
 	turn.exit()
 	setState({turno:'', caja:''})
