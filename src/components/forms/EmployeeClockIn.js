@@ -80,7 +80,7 @@ const EmployeeClockInForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
+        const res = await siteService.userClockInSite(state.caja, auth.user.id)
         if (res.length) {
             setSpinner(true) 
         } else {
@@ -93,22 +93,22 @@ const EmployeeClockInForm = () => {
             })
         }        
     }
-
+ 
 
     const handleChange = (event) => {
         const obj = {}
         let key
-        if (actions.some(x => x === event)) {
+        if (cajasDelSitio.tipo.some(x => x === event)) {
+            console.log(obj)
             obj['caja'] = event
-            console.log(event)
         } else {
             key = event.target.id ? event.target.id : event.target.name 
             obj[key] = event.target.value
             fetchCajas(obj[key])
-            console.log(fetchCajas(obj[key]))
+            console.log(obj)
             setValue(event.target.value)
         }
-
+        console.log(obj)
         const prevState = JSON.parse(JSON.stringify(state))
         setState({ ...prevState, ...obj })
     }
@@ -121,8 +121,7 @@ const EmployeeClockInForm = () => {
     })
 
     const group = getRootProps()
-    console.log(cajas)
-    console.log(state.caja)
+    console.log(group)
     console.log(auth.user[0].id)
     return (
         <form id="form-clockIn" onSubmit={handleSubmit}>
@@ -135,14 +134,14 @@ const EmployeeClockInForm = () => {
                 </Select>
             </FormControl>
             <FormControl isRequired>
-                <FormLabel html-for="caj" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
-                <Stack id="caj" name="caj" {...group} direction={['column', 'row']}>
-                {Object.values(cajasDelSitio).map((id, i) => {
-                        const radio = getRadioProps(id)
+                <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
+                <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
+                {cajasDelSitio.map((value, i) => {
+                        const radio = getRadioProps({ value }, i)
                         console.log(i)
                         return (
-                            <RadioCard key={id} {...radio}>
-                                {text[i]}
+                            <RadioCard key={value.id} {...radio}>
+                                {value.tipo}
                             </RadioCard>
                         )
                     })}
