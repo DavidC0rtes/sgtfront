@@ -10,7 +10,7 @@ import {
 const Layout = ({ children }) => {
     const navigate = useNavigate()
     return (
-      <Container id="root" height='100vh' maxW='container.xl' centerContent
+      <Container id="root" height='100vh' maxH='100vh' maxW='100vw' centerContent
         backgroundColor="#abb1dc">
         <Breadcrumb marginTop='1em'>
             <BreadcrumbItem>
