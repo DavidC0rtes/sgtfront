@@ -6,6 +6,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from '@chakra-ui/react'
+import ModalSede from '../components/ModalSede'
 
 const Layout = ({ children }) => {
     const navigate = useNavigate()
@@ -19,6 +20,9 @@ const Layout = ({ children }) => {
                 </BreadcrumbLink>
                 {children}
             </BreadcrumbItem>
+	    <BreadcrumbItem>
+		<ModalSede/>
+	    </BreadcrumbItem>
         </Breadcrumb>
         <Outlet />
       </Container>
