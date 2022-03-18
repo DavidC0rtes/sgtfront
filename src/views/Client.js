@@ -1,13 +1,11 @@
-import React from 'react'
 import { Heading, Grid, GridItem, Image} from '@chakra-ui/react'
 import ClientForm from '../components/forms/Client'
-
 
 const Client = () => {
 
     return (
         <>
-        <Heading size='4xl' margin='0.8em auto 1em'>
+        <Heading size='4xl' margin='0.4em auto 1em'>
             Ingresa tus datos
         </Heading>
         <Grid id="grid-client" templateColumns='repeat(5, 1fr)' gap={5}>

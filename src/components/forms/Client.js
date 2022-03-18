@@ -1,5 +1,7 @@
-import {React, useState} from 'react'
+import { useState, useRef } from 'react'
 import { useTurn } from '../../hooks/useTurn'
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import {
     FormControl,
     FormLabel,
@@ -20,12 +22,14 @@ import { useNavigate } from "react-router-dom";
 
 const ClientForm = () => {
     const [state, setState] = useState({ fullname: '', cc: '', caja: '', vip: false})
+    const [validCaptcha, setValidCaptcha] = useState(false)
     const [showSpinner, setSpinner] = useState(false)
     const turn = useTurn()
     const actions = ['G', 'IE', 'S', 'D']
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
     const toast = useToast()
     const navigate = useNavigate()
+    const captcha = useRef(null)
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -129,7 +133,18 @@ const ClientForm = () => {
 		    Soy V.I.P
 		</Checkbox>
 	    </FormControl>
-            <Button type="submit" colorScheme='yellow' marginTop='1em' size='lg'>Listo</Button>
+	    <Stack id="captcha-button" direction={['column', 'row']}>
+		<ReCAPTCHA
+		    ref={captcha}
+		    sitekey='6LdQh-0eAAAAAEPTIGibJMNxh8bkRyQsL2L9XoAS'
+		    onChange={() => setValidCaptcha(true)}
+		    onExpired={() => setValidCaptcha(false)}
+		    hl='es-419'
+		/>
+		<Button type="submit" colorScheme='yellow' marginTop='1em' size='lg' isDisabled={!validCaptcha}>
+		    Listo
+		</Button>
+	    </Stack>
             { showSpinner && <Spinner size='lg' />}
         </form>
     )
