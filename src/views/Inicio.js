@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useTurn } from '../hooks/useTurn'
+import { useAuth } from '../hooks/useAuth'
 import { 
     Heading,
     SimpleGrid,
@@ -11,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 const Inicio = () => {
     const turn = useTurn()
+    const auth = useAuth()
     return (
 	<Grid
 	    h='100%'
@@ -25,9 +27,14 @@ const Inicio = () => {
 	    <GridItem colSpan={7} rowSpan={4} textAlign='center'>
 	        <Heading size='4xl' margin='1.2em 0'>¡Bienvenido!</Heading>
                 <SimpleGrid columns={2} spacing={10}>
-                    <Button as={Link} to="/employee" colorScheme='teal' size='lg' padding='3em'border='1px solid gray'>
+		    {!auth.user && <Button as={Link} to="/employee" colorScheme='teal' size='lg' padding='3em'border='1px solid gray'>
                         FUNCIONARIO
                     </Button>
+		    }
+		    {auth.user && <Button as={Link} to="/employee/dashboard" colorScheme='teal' size='lg' padding='3em'border='1px solid gray'>
+                        FUNCIONARIO
+                    </Button>
+		    }
                     {turn.state && 
                         <Button as={Link} to="/client/turn" colorScheme='blue' size='lg' padding='3em' border='1px solid gray'>
                             CLIENTE
@@ -46,13 +53,9 @@ const Inicio = () => {
 	        <Image src='https://mktefa.ditrendia.es/hs-fs/hubfs/Ejemplos%20publicidad%20banca%20y%20seguros/ditrendia-Ejemplo%20publicidad%20en%20banca%20y%20seguros-banner%20Visa.png?width=300&height=600&name=ditrendia-Ejemplo%20publicidad%20en%20banca%20y%20seguros-banner%20Visa.png'
 		fit='fill'
 		htmlHeight='100%'
-	    
 		/>
 	    </GridItem>
-	    <GridItem colSpan={6} rowSpan={1}>
-	    </GridItem>
 	</Grid>
-
     )
 }
 

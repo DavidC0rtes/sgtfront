@@ -29,7 +29,7 @@ function useProvideTurn() {
      * @param {object} body 
      */
     const requestTurn = async (body) => {
-        const res = await turnService.requestTurn({cc: body.cc, tipo: body.tipo})
+        const res = await turnService.requestTurn({cc: body.cc, tipo: body.tipo, vip: body.vip})
         if (res.status === 200) {
             const newTurn = await turnService.getTurn({cc: body.cc, tipo: body.tipo})
             window.localStorage.setItem('turn', JSON.stringify(newTurn.pop()))
