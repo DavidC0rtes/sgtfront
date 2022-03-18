@@ -34,48 +34,21 @@ const ClientForm = () => {
         event.preventDefault()
 
         setSpinner(true) 
-        const res = await clientService.getByCC(state.cc)
-        if (res.length) {
 
-            const currentTurn = await turnService.getTurn({cc: state.cc})
-            if (currentTurn.length > 0) {
-                //setSpinner(false)
-                //toast({
-                //    title: '¡Oops!',
-                //    description: `El cliente con cedula ${state.cc} ya tiene un turno en espera.`,
-                //    status: 'info',
-                //    duration: 4000,
-                //    isClosable: false,
-                //})
-                try {
-                    await turn.requestTurn({cc: state.cc, tipo: state.caja, vip: state.vip})
-                    navigate("turn")
-                } catch(err) {
-                    console.err(err)
-                    toast({
-                        title: '¡Oops!',
-                        description: 'Ha ocurrido un error, intente más tarde.',
-                        status: 'error',
-                        duration: 4000,
-                        isClosable: false,
-                    })
-                }
-
-            } else {
-                //const newTurn = await turnService.requestTurn(state.cc)
-                console.log("Not yet :(")
-            }
-        } else {
+        try {
+            await turn.requestTurn({cc: state.cc, tipo: state.caja, vip: state.vip})
+            navigate("turn")
+        } catch(err) {
+            console.err(err)
             toast({
-                title: 'No se encuentra',
-                description: `El cliente con cedula ${state.cc} no se encuentra`,
+                title: '¡Oops!',
+                description: 'Ha ocurrido un error, intente más tarde.',
                 status: 'error',
-                duration: 3000,
+                duration: 4000,
                 isClosable: false,
             })
-	    setSpinner(false)
-        }        
-    }
+        }
+    }        
 
     const handleChange = (event) => {
         const obj = {}
