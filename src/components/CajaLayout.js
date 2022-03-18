@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Heading, SimpleGrid, HStack, VStack, Flex, Square, Text } from '@chakra-ui/react'
+import { useAuth } from '../hooks/useAuth'
 import cajaService from '../services/handler.js'
 
 
@@ -28,6 +29,8 @@ const CajaLayout = () => {
     const [cajas, setCajas] = useState([]) //Almacena las cajas traidas de la base de datos
     const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
     const previousUpdate = usePrevious(update)
+    const auth = useAuth()
+    const nombre_usuario = auth.user[0].nombre
 
     useEffect(() => {   //Javascript es magia negra pana, Brujería.
         const fetchCajas = async () => {
@@ -60,7 +63,7 @@ const CajaLayout = () => {
                         <VStack spacing={0} align='start'>
                             <Flex>
                                 <Text fontWeight='bold'>Atiende:</Text>
-                                <Text>Jose Alejandro Hurtado</Text> 
+                                <Text>{nombre_usuario}</Text> 
                             </Flex>
                             <Flex>
                                 <Text fontWeight='bold'>Tipo de Transacción:</Text>
