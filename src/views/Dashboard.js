@@ -9,7 +9,6 @@ const Dashboard = () => {
         <Tabs size='md' align='center' isFitted mt='1em' w='85%' bg='white' variant='enclosed-colored'>
             <TabList mb='2em'>
                 <Tab>Ingreso</Tab>
-                <Tab>Turno actual</Tab>
                 <Tab>Cajas</Tab>
                 <Tab>Reportes</Tab>
              </TabList>
@@ -17,9 +16,6 @@ const Dashboard = () => {
                 <TabPanel>
                   <EmployeeClockInForm></EmployeeClockInForm>
                </TabPanel>  
-               <TabPanel>
-                    <p>one!</p>
-               </TabPanel>
                <TabPanel>
                     <CajaLayout></CajaLayout>
                 </TabPanel>
