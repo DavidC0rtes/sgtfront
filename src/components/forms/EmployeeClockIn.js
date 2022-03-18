@@ -98,7 +98,10 @@ const EmployeeClockInForm = () => {
     const handleChange = (event) => {
         const obj = {}
         let key
-        if (cajasDelSitio.tipo.some(x => x === event)) {
+       
+        console.log(JSON.stringify(event))
+        alert(Object.values(event))
+        if (typeof event === "string") {
             console.log(obj)
             obj['caja'] = event
         } else {
@@ -121,7 +124,7 @@ const EmployeeClockInForm = () => {
     })
 
     const group = getRootProps()
-    console.log(group)
+    console.log(cajasDelSitio)
     console.log(auth.user[0].id)
     return (
         <form id="form-clockIn" onSubmit={handleSubmit}>
@@ -137,10 +140,10 @@ const EmployeeClockInForm = () => {
                 <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
                 {cajasDelSitio.map((value, i) => {
-                        const radio = getRadioProps({ value }, i)
-                        console.log(i)
+                        const radio = getRadioProps(value.id)
+                        console.log(radio)
                         return (
-                            <RadioCard key={value.id} {...radio}>
+                            <RadioCard key={value.id} value={value.id} {...radio}>
                                 {value.tipo}
                             </RadioCard>
                         )
