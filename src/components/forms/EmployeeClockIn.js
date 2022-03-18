@@ -4,6 +4,8 @@ import {
     FormControl,
     FormLabel,
     Input,
+    Grid,
+    GridItem,
     Divider,
     Button,
     Stack,
@@ -16,6 +18,8 @@ import {
 import RadioCard from '../RadioCard'
 import cajaService from '../../services/handler'
 import siteService from '../../services/sites'
+import requestTurnService from '../../services/request_turn'
+import GridUserTurn from '../GridUserTurn'
 
 function usePrevious(value) {
     // The ref object is a generic container whose current property is mutable ...
@@ -30,8 +34,9 @@ function usePrevious(value) {
   }
 
 const EmployeeClockInForm = () => {
-    const [state, setState] = useState({ sede: '', caja: ''})
+    const [state, setState] = useState({ sede: '', caja: '', tipo:''})
     const [value, setValue] = useState('');
+    const [turno, setTurno] = useState({tipo_turno:'', codigo:''})
     const [showSpinner, setSpinner] = useState(false)
     const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
     const [cajas, setCajas] = useState([]) //Almacena las cajas de la sede traidas de la base de datos
@@ -76,11 +81,12 @@ const EmployeeClockInForm = () => {
     })
 
 
-    console.log(cajasDelSitio)  
+    console.log(tipos)  
+    console.log(IDscajasDelSitio)
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-     
+        
         const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
         if (res) {
             setSpinner(true) //cambiar luego
@@ -94,14 +100,34 @@ const EmployeeClockInForm = () => {
             })
         }        
     }
+
+    const pedirTurno = async (event) => {
+        event.preventDefault()
+        console.log(parseInt(state.caja))
+        console.log(state.tipo)
+        const res = await requestTurnService.requestTurn(state.caja, state.tipo)
+        console.log(res)
+        if (res) {
+            setTurno({tipo_turno:res.tipo, codigo:res.codigo})//cambiar luego
+        } else {
+            toast({
+                title: 'No se encuentra',
+                description: `Pailas parce`,
+                status: 'error',
+                duration: 3000,
+                isClosable: false,
+            })
+        } 
+    }
  
 
     const handleChange = (event) => {
         const obj = {}
         let key
         if (typeof event === "string") {
-            console.log(obj)
-            obj['caja'] = event
+            console.log(event)
+            obj['caja'] = event[0]
+            obj['tipo'] = event.split(',')[1]  
         } else {
             key = event.target.id ? event.target.id : event.target.name 
             obj[key] = event.target.value
@@ -125,6 +151,15 @@ const EmployeeClockInForm = () => {
     console.log(cajasDelSitio)
     console.log(auth.user[0].id)
     return (
+        <div>
+            <Grid
+            h='100%'
+            w='100%'
+            mt='-3em'
+            templateColumns='repeat(12,1fr)'
+            templateRows='repeat(3,1fr)'
+            gap={4}>
+            <GridItem rowSpan={3} colSpan={6} mt='1em'>    
             <form id="form-clockIn" onSubmit={handleSubmit}>
             <FormControl isRequired>
                 <FormLabel html-for="sede" fontSize='calc(0.75em + 1vmin)' >Sedes</FormLabel>
@@ -139,10 +174,8 @@ const EmployeeClockInForm = () => {
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
                 {cajasDelSitio.map((value) => { //En realidad no selecciona nada
                         const radio = getRadioProps(value)
-                        console.log(radio)
-                        console.log(value)
                         return (
-                            <RadioCard key={value.id} value={value.id} {...radio}>
+                            <RadioCard key={value.id} value={[value.id , value.tipo]} {...radio}>
                                 {value.tipo}
                             </RadioCard>
                         )
@@ -153,7 +186,13 @@ const EmployeeClockInForm = () => {
             <Button type="submit" colorScheme='yellow' marginTop='1em' size='lg'>Listo</Button>
             { showSpinner && <Spinner size='lg' />}
         </form>
-        
+       
+        </GridItem>
+        <GridItem rowSpan={3} colSpan={6} mt='1e'>
+        <GridUserTurn id_sede_caja={state.caja} caja = {state.tipo} turno= {turno.codigo}></GridUserTurn>
+        </GridItem>
+        </Grid>
+        </div>    
     )
 }
 
