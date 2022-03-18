@@ -1,4 +1,7 @@
-import {React, useState} from 'react'
+import { useState, useRef } from 'react'
+import { useTurn } from '../../hooks/useTurn'
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import {
     FormControl,
     FormLabel,
@@ -8,34 +11,42 @@ import {
     useRadioGroup,
     Spinner,
     useToast,
+    Checkbox, 
 } from '@chakra-ui/react' 
 
 import RadioCard from '../RadioCard'
-import clientService from '../../services/client'
+import { useNavigate } from "react-router-dom";
 
 const ClientForm = () => {
-    const [state, setState] = useState({ fullname: '', cc: '', caja: ''})
+    const [state, setState] = useState({ fullname: '', cc: '', caja: '', vip: false})
+    const [validCaptcha, setValidCaptcha] = useState(false)
     const [showSpinner, setSpinner] = useState(false)
-    const actions = ['general', 'ie', 's', 'd', 'vip']
+    const turn = useTurn()
+    const actions = ['G', 'IE', 'S', 'D']
     const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
     const toast = useToast()
+    const navigate = useNavigate()
+    const captcha = useRef(null)
 
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        const res = await clientService.getByCC(state.cc)
-        if (res.length) {
-            setSpinner(true) 
-        } else {
+        setSpinner(true) 
+
+        try {
+            await turn.requestTurn({cc: state.cc, tipo: state.caja, vip: state.vip})
+            navigate("turn")
+        } catch(err) {
+            console.err(err)
             toast({
-                title: 'No se encuentra',
-                description: `El cliente con cedula ${state.cc} no se encuentra`,
+                title: '¡Oops!',
+                description: 'Ha ocurrido un error, intente más tarde.',
                 status: 'error',
-                duration: 3000,
+                duration: 4000,
                 isClosable: false,
             })
-        }        
-    }
+        }
+    }        
 
     const handleChange = (event) => {
         const obj = {}
@@ -44,7 +55,12 @@ const ClientForm = () => {
             obj['caja'] = event
         } else {
             key = event.target.id ? event.target.id : event.target.name 
-            obj[key] = event.target.value
+	    if (key === 'vip') {
+		obj[key] = !state.vip
+	    } else {
+		obj[key] = event.target.value
+	    }
+	    console.log(obj)
         }
 
         const prevState = JSON.parse(JSON.stringify(state))
@@ -82,7 +98,23 @@ const ClientForm = () => {
                     })}
                 </Stack>
             </FormControl>
-            <Button type="submit" colorScheme='yellow' marginTop='1em' size='lg'>Listo</Button>
+	    <FormControl>
+		<Checkbox id='vip' mt='1.5em' value={state.vip} onChange={handleChange}>
+		    Soy V.I.P
+		</Checkbox>
+	    </FormControl>
+	    <Stack id="captcha-button" direction={['column', 'row']}>
+		<ReCAPTCHA
+		    ref={captcha}
+		    sitekey='6LdQh-0eAAAAAEPTIGibJMNxh8bkRyQsL2L9XoAS'
+		    onChange={() => setValidCaptcha(true)}
+		    onExpired={() => setValidCaptcha(false)}
+		    hl='es-419'
+		/>
+		<Button type="submit" colorScheme='yellow' marginTop='1em' size='lg' isDisabled={!validCaptcha}>
+		    Listo
+		</Button>
+	    </Stack>
             { showSpinner && <Spinner size='lg' />}
         </form>
     )
