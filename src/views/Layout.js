@@ -7,9 +7,12 @@ import {
   BreadcrumbLink,
 } from '@chakra-ui/react'
 import ModalSede from '../components/ModalSede'
+import SignOut from '../components/SignOut'
+import { useAuth } from '../hooks/useAuth'
 
 const Layout = ({ children }) => {
     const navigate = useNavigate()
+    const auth = useAuth()
     return (
       <Container id="root" height='100vh' maxH='100vh' maxW='100vw' centerContent
         backgroundColor="#abb1dc">
@@ -23,6 +26,11 @@ const Layout = ({ children }) => {
 	    <BreadcrumbItem>
 		<ModalSede/>
 	    </BreadcrumbItem>
+	{auth.user &&
+	    <BreadcrumbItem>
+		<SignOut signout={auth.logout}/>
+	    </BreadcrumbItem>
+	}
         </Breadcrumb>
         <Outlet />
       </Container>
