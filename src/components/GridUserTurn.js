@@ -6,16 +6,13 @@ import {
     Grid,
     GridItem,
     Box,
-    Image,
     Button,
     useToast,    
-    Spinner
 } from '@chakra-ui/react'
 import requestTurnService from '../services/request_turn'
 
 const GridUserTurn = (props) => {
     const [state, setState] = useState({codigo:'', caja:''})
-    const [showSpinner, setSpinner] = useState(true)
     const [turno, setTurno] = useState({tipo_turno:'', codigo:''})
     const toast = useToast()
     //setState({codigo:props.turno, caja:props.caja})

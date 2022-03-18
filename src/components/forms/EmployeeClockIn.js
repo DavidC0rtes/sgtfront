@@ -3,10 +3,8 @@ import { useAuth } from '../../hooks/useAuth'
 import {
     FormControl,
     FormLabel,
-    Input,
     Grid,
     GridItem,
-    Divider,
     Button,
     Stack,
     useRadioGroup,
@@ -18,7 +16,6 @@ import {
 import RadioCard from '../RadioCard'
 import cajaService from '../../services/handler'
 import siteService from '../../services/sites'
-import requestTurnService from '../../services/request_turn'
 import GridUserTurn from '../GridUserTurn'
 
 function usePrevious(value) {
@@ -44,8 +41,7 @@ const EmployeeClockInForm = () => {
     const [sedes, setSedes] = useState([]) //Almacena las sedes traidas de la base de datos
     const auth = useAuth()
     const previousUpdate = usePrevious(update)
-    var actions = []
-    const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
+    //const text = ['General', 'Importaciones/Exportaciones', 'Seguros', 'Dólares', 'VIP']
     const toast = useToast()
 
     useEffect(() => {   //Javascript es magia negra pana, Brujería.
@@ -76,10 +72,6 @@ const EmployeeClockInForm = () => {
     const IDscajasDelSitio = cajas.map(value => value.id_caja_id) //Hacemos un Array con las ID de las cajas en la sede
     const cajasDelSitio = tipos.filter(caja => IDscajasDelSitio.includes(caja.id)) //Filtramos las cajas del sitio
 
-    actions = cajasDelSitio.map(function(el){ //Los tipos de cajas que hay en la base de datos (IE, G, etc.)
-        return el.tipo
-    })
-
 
     console.log(tipos)  
     console.log(cajas)
@@ -103,25 +95,6 @@ const EmployeeClockInForm = () => {
            // })
         }        
     }
-
-    const pedirTurno = async (event) => {
-        event.preventDefault()
-        console.log(parseInt(state.caja))
-        console.log(state.tipo)
-        const res = await requestTurnService.requestTurn(state.caja, state.tipo)
-        console.log(res)
-        if (res) {
-            setTurno({tipo_turno:res.tipo, codigo:res.codigo})//cambiar luego
-        } else {
-            toast({
-                title: 'No se encuentra',
-                status: 'error',
-                duration: 3000,
-                isClosable: false,
-            })
-        } 
-    }
- 
 
     const handleChange = (event) => {
         const obj = {}
