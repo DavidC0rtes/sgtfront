@@ -55,7 +55,7 @@ const Reports = () => {
             labels: Object.keys(Object.assign({}, ...cajas)),
             datasets: [
               {
-                label: "Rhazek es gay",
+                label: "Cajas de la sede",
                 data: Object.keys(cajas).map(function(key){return cajas[key]}),
                 borderColor: "rgb(53, 162, 235)",
                 backgroundColor: "rgba(53, 162, 235, 0.4)",
@@ -70,7 +70,7 @@ const Reports = () => {
               },
               title: {
                 display: true,
-                text: "Es Rhazek gay?",
+                text: "Por Sede",
               },
             },
           });
