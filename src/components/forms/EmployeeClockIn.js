@@ -136,7 +136,7 @@ const EmployeeClockInForm = () => {
             <FormControl>
                 <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
-                {cajasDelSitio.map((value) => {
+                {cajasDelSitio.map((value) => { //En realidad no selecciona nada
                         const radio = getRadioProps(value)
                         console.log(radio)
                         console.log(value)
