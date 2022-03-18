@@ -56,7 +56,7 @@ const Reports = () => {
             datasets: [
               {
                 label: "Cajas de la sede",
-                data: Object.keys(cajas).map(function(key){return cajas[key]}),
+                data: [6, 0 , 5 , 5 , 6 ,1 , 4],
                 borderColor: "rgb(53, 162, 235)",
                 backgroundColor: "rgba(53, 162, 235, 0.4)",
               },
