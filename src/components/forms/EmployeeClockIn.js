@@ -82,6 +82,7 @@ const EmployeeClockInForm = () => {
 
 
     console.log(tipos)  
+    console.log(cajas)
     console.log(IDscajasDelSitio)
 
     const handleSubmit = async (event) => {
@@ -150,7 +151,7 @@ const EmployeeClockInForm = () => {
 
     const group = getRootProps()
     console.log(cajasDelSitio)
-    console.log(auth.user[0].id)
+    console.log(auth.user[0])
     return (
         <div>
             <Grid
