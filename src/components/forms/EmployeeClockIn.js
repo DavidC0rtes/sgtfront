@@ -79,8 +79,8 @@ const EmployeeClockInForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-
-        const res = await siteService.userClockInSite(state.caja, auth.user.id)
+     
+        const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
         if (res.length) {
             setSpinner(true) 
         } else {
@@ -98,9 +98,6 @@ const EmployeeClockInForm = () => {
     const handleChange = (event) => {
         const obj = {}
         let key
-       
-        console.log(JSON.stringify(event))
-        alert(Object.values(event))
         if (typeof event === "string") {
             console.log(obj)
             obj['caja'] = event
@@ -136,12 +133,13 @@ const EmployeeClockInForm = () => {
                     })}
                 </Select>
             </FormControl>
-            <FormControl isRequired>
+            <FormControl>
                 <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
-                {cajasDelSitio.map((value, i) => {
-                        const radio = getRadioProps(value.id)
+                {cajasDelSitio.map((value) => {
+                        const radio = getRadioProps(value)
                         console.log(radio)
+                        console.log(value)
                         return (
                             <RadioCard key={value.id} value={value.id} {...radio}>
                                 {value.tipo}
