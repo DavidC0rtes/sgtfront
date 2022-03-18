@@ -81,7 +81,7 @@ const EmployeeClockInForm = () => {
         event.preventDefault()
      
         const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
-        if (res.length) {
+        if (res) {
             setSpinner(true) 
         } else {
             toast({
