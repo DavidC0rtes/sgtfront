@@ -15,8 +15,6 @@ import {
 } from '@chakra-ui/react' 
 
 import RadioCard from '../RadioCard'
-import clientService from '../../services/client'
-import turnService from '../../services/turn'
 import { useNavigate } from "react-router-dom";
 
 const ClientForm = () => {
