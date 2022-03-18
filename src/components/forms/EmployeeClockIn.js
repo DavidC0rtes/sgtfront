@@ -87,20 +87,20 @@ const EmployeeClockInForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        
+	
         const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
         setSpinner(true)
         if (res) {
             setSpinner(false)
         } else {
             setSpinner(false)
-            toast({
-                title: 'No se encuentra',
-                description: `El cliente con cedula ${state.cc} no se encuentra`,
-                status: 'error',
-                duration: 3000,
-                isClosable: false,
-            })
+           // toast({
+           //     title: 'No se encuentra',
+           //     description: `El cliente con cedula ${state.cc} no se encuentra`,
+           //     status: 'error',
+           //     duration: 3000,
+           //     isClosable: false,
+           // })
         }        
     }
 
