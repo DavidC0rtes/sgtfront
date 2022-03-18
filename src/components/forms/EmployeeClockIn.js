@@ -87,18 +87,20 @@ const EmployeeClockInForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        
+	
         const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
+        setSpinner(true)
         if (res) {
-            setSpinner(true) //cambiar luego
+            setSpinner(false)
         } else {
-            toast({
-                title: 'No se encuentra',
-                description: `El cliente con cedula ${state.cc} no se encuentra`,
-                status: 'error',
-                duration: 3000,
-                isClosable: false,
-            })
+            setSpinner(false)
+           // toast({
+           //     title: 'No se encuentra',
+           //     description: `El cliente con cedula ${state.cc} no se encuentra`,
+           //     status: 'error',
+           //     duration: 3000,
+           //     isClosable: false,
+           // })
         }        
     }
 
@@ -113,7 +115,6 @@ const EmployeeClockInForm = () => {
         } else {
             toast({
                 title: 'No se encuentra',
-                description: `Pailas parce`,
                 status: 'error',
                 duration: 3000,
                 isClosable: false,
@@ -174,7 +175,7 @@ const EmployeeClockInForm = () => {
                 <FormLabel html-for="caja" fontSize='calc(0.75em + 1vmin)' >Cajas en la sede</FormLabel>
                 <Stack id="caja" name="caja" {...group} direction={['column', 'row']}>
                 {cajasDelSitio.map((value) => { //En realidad no selecciona nada
-                        const radio = getRadioProps(value)
+                        const radio = getRadioProps({ value })
                         return (
                             <RadioCard key={value.id} value={[value.id , value.tipo]} {...radio}>
                                 {value.tipo}
