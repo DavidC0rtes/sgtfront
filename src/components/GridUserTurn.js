@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line
 import {
     Text,
     Grid,
@@ -31,7 +32,6 @@ const GridUserTurn = (props) => {
         } else {
             toast({
                 title: 'No se encuentra',
-                description: `Pailas parce`,
                 status: 'error',
                 duration: 3000,
                 isClosable: false,
