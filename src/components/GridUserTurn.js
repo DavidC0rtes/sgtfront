@@ -48,16 +48,14 @@ const GridUserTurn = (props) => {
             templateRows='repeat(3,1fr)'
             gap={4}
         >
-            <GridItem rowSpan={2} colSpan={5}>
+            <GridItem rowSpan={4} colSpan={5}>
                 <Text fontSize='lg' textAlign='center'>Turno actual</Text>
-                <Box bg='gray.50' h='100%' borderRadius='md' border='1px solid black' lineHeight='350px' maxH='50vh' maxW='30vw'>
+                <Box bg='gray.50' h='80%' borderRadius='md' border='1px solid black' lineHeight='350px' maxH='50vh' maxW='30vw'>
 		    
 		    <Text fontSize='8vw' align='center' >{`${turno.tipo_turno}${turno.codigo}`}</Text>
                 </Box>
+            <Button onClick={(event) => pedirTurno(event)} colorScheme='yellow' marginTop='1em' size='lg'>Pedir Turno</Button>
             </GridItem>
-	    <GridItem colSpan={5} mt='5px'>
-		<Button onClick={(event) => pedirTurno(event)} colorScheme='yellow' marginTop='1em' size='lg'>Pedir Turno</Button>
-	    </GridItem>
 
         </Grid>
     )
