@@ -4,6 +4,7 @@ import {
     FormControl,
     FormLabel,
     Input,
+    Divider,
     Button,
     Stack,
     useRadioGroup,
@@ -82,7 +83,7 @@ const EmployeeClockInForm = () => {
      
         const res = await siteService.userClockInSite(state.caja, auth.user[0].id)
         if (res) {
-            setSpinner(true) 
+            setSpinner(true) //cambiar luego
         } else {
             toast({
                 title: 'No se encuentra',
@@ -124,7 +125,7 @@ const EmployeeClockInForm = () => {
     console.log(cajasDelSitio)
     console.log(auth.user[0].id)
     return (
-        <form id="form-clockIn" onSubmit={handleSubmit}>
+            <form id="form-clockIn" onSubmit={handleSubmit}>
             <FormControl isRequired>
                 <FormLabel html-for="sede" fontSize='calc(0.75em + 1vmin)' >Sedes</FormLabel>
                 <Select id="sede" placeholder="Seleccionar sede"  value={value} onChange={handleChange}>
@@ -148,9 +149,11 @@ const EmployeeClockInForm = () => {
                     })}
                 </Stack>
             </FormControl>
+
             <Button type="submit" colorScheme='yellow' marginTop='1em' size='lg'>Listo</Button>
             { showSpinner && <Spinner size='lg' />}
         </form>
+        
     )
 }
 
