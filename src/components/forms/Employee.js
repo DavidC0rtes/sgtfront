@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useAuth } from '../../hooks/useAuth'
 import {
@@ -8,14 +8,16 @@ import {
     Button
 } from '@chakra-ui/react' 
 import { useNavigate } from "react-router-dom";
-
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const EmployeeForm = () => {
     const [state, setState] = useState({ username: '', password: ''})
+    const [validCaptcha, setValidCaptcha] = useState(false)
     const auth = useAuth()
     const toast = useToast()
     const toastID = 'toast-login'
     const navigate = useNavigate()
+    const captcha = useRef(null)
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -54,7 +56,15 @@ const EmployeeForm = () => {
                 <FormLabel html-for="password" fontSize='calc(0.75em + 1vmin)'>Contraseña</FormLabel>
                 <Input id="password" type="password" variant="filled" size='lg' value={state.password} onChange={handleChange} />
             </FormControl>
-            <Button type="submit" colorScheme="cyan" size="lg">Entrar</Button>
+	    
+	    <ReCAPTCHA
+	        ref={captcha}
+	        sitekey='6LdQh-0eAAAAAEPTIGibJMNxh8bkRyQsL2L9XoAS'
+	        onChange={() => setValidCaptcha(true)}
+	        onExpired={() => setValidCaptcha(false)}
+	        hl='es-419'
+	    />
+            <Button mt='0.5em'isDisabled={!validCaptcha} type="submit" colorScheme="cyan" size="lg">Entrar</Button>
         </form>
     )
 }

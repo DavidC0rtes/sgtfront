@@ -11,8 +11,9 @@ const getTurn = async(body) => {
     return data
 }
 
-const requestTurn = async({cc, tipo}) => {
-    const response = await fetch(`${baseUrl}/crear_turno/?tipo=${tipo}&cedula_cliente=${cc}&prioridad=`)
+const requestTurn = async({cc, tipo, vip}) => {
+    console.log(cc,tipo,vip)
+    const response = await fetch(`${baseUrl}/crear_turno/?tipo=${tipo}&cedula_cliente=${cc}&prioridad=${vip || ''}`)
     return response
 }
 
