@@ -11,8 +11,7 @@ import {
     useRadioGroup,
     Spinner,
     useToast,
-    Checkbox,CheckboxGroup, 
-    useCheckBox
+    Checkbox, 
 } from '@chakra-ui/react' 
 
 import RadioCard from '../RadioCard'
